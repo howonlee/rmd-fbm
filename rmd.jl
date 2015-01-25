@@ -12,6 +12,7 @@ function midpoint_bm(maxlevel, sigma=1)
   midpoint_helper(X, 1, N, 1, maxlevel)
   #there should actually be an analytic expression for the stack depth
   #in which case we can dispense with the helper
+  #maybe pascal's triangle
 end
 
 function midpoint_helper(x, idx0, idx2, level, maxlevel, st_devs)
