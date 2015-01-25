@@ -1,7 +1,9 @@
 using Distributions
+using PyPlot
 #normally we get brownian motion by integration of white noise
 #we are starting with normal bm instead of fbm, with rmd
 
+#=
 function midpoint_bm(maxlevel, sigma=1)
   gauss = Gaussian()
   X = [0 for i in 1:2049]
@@ -24,3 +26,26 @@ function midpoint_helper(x, idx0, idx2, level, maxlevel, st_devs)
     midpoint_helper(X, idx1, idx2, level+1, maxlevel, st_devs)
   end
 end
+=#
+  
+X = [0 for i in 1:129]
+
+function stack_depth(maxlevel=7)
+  N = (2 ^ maxlevel) + 1
+  X[1] = 0
+  X[N] = 0
+  stack_helper(1, N, 1, maxlevel)
+end
+
+function stack_helper(idx0, idx2, level, maxlevel)
+  idx1 = div(idx0 + idx2, 2)::Int
+  X[idx1] = level
+  if level < maxlevel
+    stack_helper(idx0, idx1, level+1, maxlevel)
+    stack_helper(idx1, idx2, level+1, maxlevel)
+  end
+end
+
+stack_depth()
+plt.plot(X)
+plt.savefig("stack_depth")
